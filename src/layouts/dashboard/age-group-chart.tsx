@@ -1,7 +1,7 @@
 "use client";
 
+import React from "react";
 import { LabelList, Pie, PieChart } from "recharts";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   type ChartConfig,
@@ -9,43 +9,46 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import type { AnalyticsData } from "./types";
 
-const chartData = [
-  { age_group: "18-25", count: 275, fill: "#FB923C" },
-  { age_group: "26-35", count: 200, fill: "#C084FC" },
-  { age_group: "36-50", count: 187, fill: "#2563EB" },
-  { age_group: "50+", count: 187, fill: "#22C55E" },
-];
+interface AgeGroupChartProps {
+  analytics?: AnalyticsData;
+}
 
-const chartConfig = {
-  age_group: {
-    label: "Age Group",
-  },
-  "18-25": {
-    label: "18-25",
-    color: "#FB923C",
-  },
-  "26-35": {
-    label: "26-35",
-    color: "#C084FC",
-  },
-  "36-50": {
-    label: "36-50",
-    color: "#2563EB",
-  },
-  "50+": {
-    label: "50+",
-    color: "#22C55E",
-  },
-} satisfies ChartConfig;
+export function AgeGroupChart({ analytics }: AgeGroupChartProps) {
+  // Define fixed color mapping for known age groups
+  const ageGroupColors: Record<string, string> = {
+    "18-25": "#FB923C",
+    "26-35": "#C084FC",
+    "36-50": "#2563EB",
+    "50+": "#22C55E",
+  };
 
-export function AgeGroupChart() {
+  // Transform backend data into chart data
+  const chartData =
+    analytics?.age_groups?.map((item) => ({
+      age_group: item.age_group,
+      count: item.count,
+      fill: ageGroupColors[item.age_group] || "#9CA3AF", // fallback gray
+    })) || [];
+
   const total = chartData.reduce((sum, d) => sum + d.count, 0);
+
   const items = chartData.map((d) => ({
     label: d.age_group,
     color: d.fill,
-    percent: ((d.count / total) * 100).toFixed(0) + "%",
+    percent: total > 0 ? `${((d.count / total) * 100).toFixed(0)}%` : "0%",
   }));
+
+  // Chart Config (for tooltip & legend)
+  const chartConfig = {
+    age_group: { label: "Age Group" },
+    "18-25": { label: "18-25", color: "#FB923C" },
+    "26-35": { label: "26-35", color: "#C084FC" },
+    "36-50": { label: "36-50", color: "#2563EB" },
+    "50+": { label: "50+", color: "#22C55E" },
+  } satisfies ChartConfig;
+
   return (
     <Card className="flex flex-col border border-[#D2D5DA] shadow-none">
       <CardHeader className="items-center pb-0">
@@ -63,8 +66,9 @@ export function AgeGroupChart() {
             <Pie
               data={chartData}
               innerRadius={0}
+              outerRadius={100}
               dataKey="count"
-              radius={10}
+              paddingAngle={3}
             >
               <LabelList
                 dataKey="count"
@@ -77,6 +81,8 @@ export function AgeGroupChart() {
             </Pie>
           </PieChart>
         </ChartContainer>
+
+        {/* Legend section */}
         <div className="flex flex-col gap-3">
           {items.map((item) => (
             <div key={item.label} className="flex items-center justify-between">

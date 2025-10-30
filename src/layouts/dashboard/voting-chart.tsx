@@ -1,91 +1,89 @@
+"use client";
 
-import { Bar, BarChart, CartesianGrid, XAxis, LabelList } from "recharts";
+import { Bar, BarChart, XAxis, LabelList, Cell, YAxis } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
+  type ChartConfig,
 } from "@/components/ui/chart";
-import { Loader2 } from "lucide-react";
-import { useState } from "react";
+
+// Define consistent chart categories (display labels + mapping to API keys)
+const defaultChartData = [
+  { choice: "firm", label: "Yes, Firm decision", count: 0 },
+  { choice: "leaning", label: "Leaning one party", count: 0 },
+  { choice: "thinking", label: "Still thinking", count: 0 },
+  { choice: "wont_vote", label: "Won’t vote", count: 0 },
+];
 
 const chartConfig = {
-  enquiries: {
-    label: "Enquiries",
-    color: "#008FE5",
-  },
-};
+  firm: { label: "Yes, Firm decision", color: "#FFBD45" },
+  leaning: { label: "Leaning one party", color: "#235FE3" },
+  thinking: { label: "Still thinking", color: "#20BC5B" },
+  wont_vote: { label: "Won’t vote", color: "#B77EF3" },
+} satisfies ChartConfig;
 
+export function VotingChart({ analytics }: { analytics?: any }) {
+  const votingData = analytics?.voting_decision || [];
 
-
-export function EnquiryChart() {
-  const [isLoading, setIsLoading] = useState(false)
-  
+  // Merge the API data with default categories
+  const chartData = defaultChartData.map((item) => {
+    const found = votingData.find(
+      (v: any) => v.choice?.toLowerCase() === item.choice.toLowerCase()
+    );
+    return { ...item, count: found ? found.count : 0 };
+  });
 
   return (
-    <Card className=" w-full  rounded-[10px] border border-[#EEEEEE]  shadow-none p-0">
-      <CardHeader className="flex justify-between items-center space-y-0 border-b sm:flex-row px-4 py-2 sm:py-2">
+    <Card className="w-full rounded-[10px] border border-[#D2D5DA] shadow-none col-span-2">
+      <CardHeader className="flex justify-between items-center space-y-0 py-2 mb-4 sm:py-2">
         <div className="flex flex-1 flex-col justify-center gap-1">
-          <CardTitle>Enquiries Chart</CardTitle>     
+          <CardTitle>Whom to vote for on 11 November?</CardTitle>
         </div>
       </CardHeader>
 
-      <CardContent className="px-2 sm:p-6">
-        {isLoading ? (
-          <div className="flex items-center justify-center p-6 h-[300px]">
-            <Loader2 className="h-8 w-8 text-blue-400 animate-spin" />
-          </div>
-        ) : (
-          <ChartContainer
-            config={chartConfig}
-            className="aspect-auto h-[250px] w-full"
-          >
-            <BarChart
-              accessibilityLayer
-              data={chartData}
-              margin={{ left: 12, right: 12 }}
-              barGap={2}
-            >
-              <CartesianGrid vertical={false} />
-              <XAxis
-                dataKey={viewType === "yearly" ? "month" : "date"}
-                tickLine={false}
-                axisLine={false}
-                tickMargin={10}
-                minTickGap={25}
-                tickFormatter={(value, index) => {
-                  const currentData = chartData[index];
-                  // Hide tick if enquiries are 0
-                  if (currentData?.enquiries === 0) return "";
-                  return viewType === "daily"
-                    ? new Date(value).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                      })
-                    : value;
-                }}
-              />
-              <ChartTooltip
-                content={
-                  <ChartTooltipContent
-                    hideLabel={viewType === "yearly"}
-                    className="w-[100px]"
-                    nameKey="enquiries"
-                  />
-                }
-              />
-              <Bar dataKey="enquiries" radius={[4, 4, 4, 4]} fill="#008FE5">
-                <LabelList
-                  position="top"
-                  offset={12}
-                  className="fill-foreground"
-                  fontSize={12}
-                  formatter={(value) => (value === 0 ? "" : value)}
+      <CardContent>
+        <ChartContainer
+          config={chartConfig}
+          className="aspect-auto h-[280px] w-full pt-10"
+        >
+          <BarChart data={chartData}>
+            <XAxis
+              dataKey="label"
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
+              tick={{ fill: "#6B7280", fontSize: 12 }}
+            />
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              tick={{ fill: "#9CA3AF", fontSize: 12 }}
+              width={40}
+            />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent nameKey="choice" />}
+            />
+            <Bar dataKey="count" radius={4}>
+              {chartData.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={
+                    chartConfig[entry.choice as keyof typeof chartConfig].color
+                  }
                 />
-              </Bar>
-            </BarChart>
-          </ChartContainer>
-        )}
+              ))}
+              <LabelList
+                dataKey="count"
+                position="top"
+                fontSize={12}
+                fill="#374151"
+              />
+            </Bar>
+          </BarChart>
+        </ChartContainer>
       </CardContent>
     </Card>
   );

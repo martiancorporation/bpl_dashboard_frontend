@@ -1,6 +1,7 @@
 "use client";
-import { Bar, BarChart, XAxis } from "recharts";
 
+import React from "react";
+import { Bar, BarChart, XAxis } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   type ChartConfig,
@@ -8,123 +9,77 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import React from "react";
+import type { AnalyticsData } from "./types";
 
-const chartData = [
-  { muslim: 342, yadav: 245, obc: 123, dalit: 182, others: 382 },
-];
-
-const chartConfig = {
-  muslim: {
-    label: "Muslim",
-    color: "#C084FC",
-  },
-  yadav: {
-    label: "Yadav",
-    color: "#2563EB",
-  },
-  obc: {
-    label: "OBC",
-    color: "#CD0AD0",
-  },
-  dalit: {
-    label: "Dalit",
-    color: "#FB923C",
-  },
-  others: {
-    label: "Others",
-    color: "#22C55E",
-  },
-} satisfies ChartConfig;
-
-interface ChartItem {
-  key: keyof typeof chartConfig;
-  label: string;
-  value: number;
-  color: string;
-  percent: string;
+interface CommunityChartProps {
+  analytics?: AnalyticsData;
 }
-type ActiveProperty = keyof typeof chartConfig | "all";
 
-export function CommunityChart() {
+type CasteKey = keyof NonNullable<AnalyticsData["caste"]>;
+type ActiveProperty = CasteKey | "all";
+
+export function CommunityChart({ analytics }: CommunityChartProps) {
+  // Extract caste data from analytics
+  const casteData = analytics?.caste || {};
+
+  // Define fixed color mapping for castes
+  const chartConfig = {
+    muslim: { label: "Muslim", color: "#C084FC" },
+    yadav: { label: "Yadav", color: "#2563EB" },
+    obc: { label: "OBC", color: "#CD0AD0" },
+    dalit: { label: "Dalit", color: "#FB923C" },
+    others: { label: "Others", color: "#22C55E" },
+  } satisfies ChartConfig;
+
+  // Prepare single data row for the bar chart
+  const chartData = [casteData];
+
+  const total = Object.values(casteData).reduce((a, b) => a + (b || 0), 0);
   const [activeProperty] = React.useState<ActiveProperty>("all");
-  const data = chartData[0];
-  const total = Object.values(data).reduce((a, b) => a + b, 0);
 
-  const items: ChartItem[] = (
-    Object.keys(chartConfig) as (keyof typeof chartConfig)[]
-  ).map((key) => ({
-    key,
-    label: chartConfig[key].label,
-    color: chartConfig[key].color,
-    value: data[key],
-    percent: ((data[key] / total) * 100).toFixed(0) + "%",
-  }));
+  const items = (Object.keys(chartConfig) as (keyof typeof chartConfig)[])
+    .filter((key) => casteData[key] !== undefined)
+    .map((key) => ({
+      key,
+      label: chartConfig[key].label,
+      color: chartConfig[key].color,
+      value: casteData[key] || 0,
+      percent:
+        total > 0 ? `${((casteData[key]! / total) * 100).toFixed(0)}%` : "0%",
+    }));
+
   return (
-    <Card className="flex flex-col justify-betweenborder border-[#D2D5DA] shadow-none">
+    <Card className="flex flex-col justify-between border border-[#D2D5DA] shadow-none">
       <CardHeader>
         <div className="flex flex-row justify-between">
-          <CardTitle>Caste/Community</CardTitle>
+          <CardTitle>Caste / Community</CardTitle>
         </div>
       </CardHeader>
+
       <CardContent className="flex flex-col justify-between h-full">
-        <ChartContainer className="h-36 w-full" config={chartConfig}>
+        <ChartContainer className="h-20 w-full my-auto" config={chartConfig}>
           <BarChart accessibilityLayer data={chartData} layout="vertical">
-            <XAxis
-              type="number"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-              hide
-            />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
-            <Bar
-              stackId="a"
-              barSize={100}
-              className="dark:text-[#1A1A1C] text-[#E4E4E7]"
-              dataKey="muslim"
-              fill="#C084FC"
-              shape={<CustomGradientBar activeProperty={activeProperty} />}
-              background={{ fill: "currentColor", radius: 4 }} // Only Top Bar will have background else it will give render errors
-              overflow="visible"
-            />
-            <Bar
-              stackId="a"
-              barSize={8}
-              shape={<CustomGradientBar activeProperty={activeProperty} />}
-              dataKey="yadav"
-              fill="#2563EB"
-              overflow="visible"
-            />
-            <Bar
-              stackId="a"
-              barSize={8}
-              shape={<CustomGradientBar activeProperty={activeProperty} />}
-              dataKey="obc"
-              fill="#CD0AD0"
-              overflow="visible"
-            />
-            <Bar
-              stackId="a"
-              barSize={8}
-              shape={<CustomGradientBar activeProperty={activeProperty} />}
-              dataKey="dalit"
-              fill="#FB923C"
-              overflow="visible"
-            />
-            <Bar
-              stackId="a"
-              barSize={8}
-              shape={<CustomGradientBar activeProperty={activeProperty} />}
-              dataKey="others"
-              fill="#22C55E"
-              overflow="visible"
-            />
+            <XAxis type="number" tickLine={false} axisLine={false} hide />
+            <ChartTooltip content={<ChartTooltipContent hideLabel />} />
+
+            {items.map((item, i) => (
+              <Bar
+                key={item.key}
+                stackId="a"
+                barSize={i === 0 ? 100 : 8}
+                dataKey={item.key}
+                fill={item.color}
+                shape={<CustomGradientBar activeProperty={activeProperty} />}
+                background={
+                  i === 0 ? { fill: "currentColor", radius: 4 } : undefined
+                }
+                overflow="visible"
+              />
+            ))}
           </BarChart>
         </ChartContainer>
+
+        {/* Legend section */}
         <div className="flex flex-col gap-3">
           {items.map((item) => (
             <div key={item.key} className="flex items-center justify-between">
@@ -148,6 +103,7 @@ export function CommunityChart() {
   );
 }
 
+// ✅ Reusable bar with glow effect
 const CustomGradientBar = (
   props: React.SVGProps<SVGRectElement> & {
     dataKey?: string;
@@ -157,7 +113,7 @@ const CustomGradientBar = (
 ) => {
   const { fill, x, y, width, height, dataKey, activeProperty, radius } = props;
 
-  const isActive = activeProperty === "all" ? true : activeProperty === dataKey;
+  const isActive = activeProperty === "all" || activeProperty === dataKey;
 
   return (
     <>

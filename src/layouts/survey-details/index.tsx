@@ -31,8 +31,9 @@ const SurveyDetails = () => {
     loading,
     survey,
   };
+
   return (
-    <main className="w-full h-full flex flex-col">
+    <main className="w-full flex-1 flex flex-col overflow-y-auto">
       <Navbar title={"Survey Details"} />
       <Body {..._this} />
     </main>

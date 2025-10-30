@@ -1,7 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, LoaderCircle } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { useNavigate } from "react-router-dom";
 
 interface SurveyResponse {
   _id: string;
@@ -38,13 +39,29 @@ interface SurveyResponse {
   __v: number;
 }
 
-const Body = (_this: { survey: SurveyResponse | undefined }) => {
-  console.log(_this.survey);
+const Body = (_this: {
+  survey: SurveyResponse | undefined;
+  loading: boolean;
+}) => {
+  const navigate = useNavigate();
   const survey = _this.survey ? _this.survey : undefined;
+
+  if (_this.loading) {
+    return (
+      <div className="flex justify-center items-center h-[calc(100vh-55px)]">
+        <LoaderCircle size={40} className="animate-spin text-[#2563EB]" />
+      </div>
+    );
+  }
   return (
-    <div className="container mx-auto px-8 h-full flex flex-col gap-y-4">
-      <div className="w-full flex flex-col md:flex-row gap-4 items-center justify-between pt-5 px-1.5">
-        <div className="w-full md:w-auto flex justify-between md:justify-center items-center gap-x-3 text-[14px] font-medium cursor-pointer">
+    <div className="container mx-auto px-8 h-full flex flex-col gap-y-4 py-5">
+      <div className="w-full flex flex-col md:flex-row gap-4 items-center justify-between px-1.5">
+        <div
+          onClick={() => {
+            navigate(-1);
+          }}
+          className="w-full md:w-auto flex justify-between md:justify-center items-center gap-x-3 text-[14px] font-medium cursor-pointer"
+        >
           <span className="w-[25px] h-[25px] bg-[#F1F1F1] rounded-[5px] flex justify-center items-center">
             <ChevronLeft size={16} />
           </span>{" "}
@@ -464,8 +481,8 @@ const Body = (_this: { survey: SurveyResponse | undefined }) => {
             <h2 className="font-medium text-[15px] mb-3">
               Q2. What kind of Bihar do you dream of in the next 5 years?
             </h2>
-            <p>
-              <span className="pl-3">Ans:</span>
+            <p className="flex gap-x-3">
+              <span>Ans:</span>
               {survey?.q14_bihar_dream}
             </p>
           </div>

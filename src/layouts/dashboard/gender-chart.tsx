@@ -1,58 +1,54 @@
 "use client";
-
 import { LabelList, Pie, PieChart } from "recharts";
-
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import type { AnalyticsData } from "./types";
 
-const chartData = [
-  { gender: "male", count: 275, fill: "#FB923C" },
-  { gender: "female", count: 200, fill: "#C084FC" },
-  { gender: "others", count: 187, fill: "#2563EB" },
-];
+interface GenderChartProps {
+  analytics?: AnalyticsData;
+}
 
-const chartConfig = {
-  gender: {
-    label: "Gender",
-  },
-  male: {
-    label: "Male",
-    color: "#FB923C",
-  },
-  female: {
-    label: "Female",
-    color: "#C084FC",
-  },
-  others: {
-    label: "Others",
-    color: "#2563EB",
-  }
-} satisfies ChartConfig;
+export function GenderChart({ analytics }: GenderChartProps) {
+  // Default colors per gender
+  const genderColors: Record<string, string> = {
+    male: "#FB923C",
+    female: "#C084FC",
+    other: "#2563EB",
+  };
 
+  // Map analytics data -> chart data
+  const chartData =
+    analytics?.gender?.map((item) => ({
+      gender: item.gender,
+      count: item.count,
+      fill: genderColors[item.gender] || "#9CA3AF",
+    })) || [];
 
-export function GenderChart() {
   const total = chartData.reduce((sum, d) => sum + d.count, 0);
+
+  // Derived items for percentage display
   const items = chartData.map((d) => ({
     label: d.gender,
     color: d.fill,
-    percent: ((d.count / total) * 100).toFixed(0) + "%",
+    percent: total > 0 ? `${((d.count / total) * 100).toFixed(0)}%` : "0%",
   }));
+
+  const chartConfig = {
+    gender: { label: "Gender" },
+    male: { label: "Male", color: "#FB923C" },
+    female: { label: "Female", color: "#C084FC" },
+    other: { label: "Other", color: "#2563EB" },
+  } satisfies ChartConfig;
+
   return (
     <Card className="flex flex-col border border-[#D2D5DA] shadow-none">
       <CardHeader className="items-center pb-0">
-        <CardTitle>
-          Gender
-        </CardTitle>
+        <CardTitle>Gender</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col justify-between h-full">
         <ChartContainer
@@ -67,7 +63,8 @@ export function GenderChart() {
               data={chartData}
               innerRadius={55}
               dataKey="count"
-              radius={10}
+              outerRadius={100}
+              paddingAngle={3}
             >
               <LabelList
                 dataKey="count"
@@ -80,6 +77,8 @@ export function GenderChart() {
             </Pie>
           </PieChart>
         </ChartContainer>
+
+        {/* Legend */}
         <div className="flex flex-col gap-3">
           {items.map((item) => (
             <div key={item.label} className="flex items-center justify-between">
