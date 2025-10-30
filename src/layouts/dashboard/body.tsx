@@ -1,7 +1,12 @@
 
 import { useState } from "react";
 import CandidateWinPercentages from "./candidate-win-percentages";
-import VotingChart from "./voting-chart";
+// import VotingChart from "./voting-chart";
+import { GenderChart } from "./gender-chart";
+import { AgeGroupChart } from "./age-group-chart";
+import { CommunityChart } from "./community-chart";
+import { IssuesChart } from "./issues-chart";
+import { PoliticalMoodChart } from "./political-mood-chart";
 
 export default function Body() {
   const [loading, setLoading] = useState(false);
@@ -50,8 +55,17 @@ export default function Body() {
         <CandidateWinPercentages />
       </div>
       <div>
-        <VotingChart/>
+        {/* <VotingChart/> */}
+      <div className="grid grid-cols-3 gap-4">
+        <GenderChart/>
+        <AgeGroupChart/>
+        <CommunityChart/>
       </div>
-    </div>
+      <div className="grid grid-cols-3 gap-4">
+        <IssuesChart/>
+        <PoliticalMoodChart/>
+      </div>
+      </div>
+      </div>
   );
 }
