@@ -1,15 +1,13 @@
 
-import { useState } from "react";
-import CandidateWinPercentages from "./candidate-win-percentages";
-// import VotingChart from "./voting-chart";
 import { GenderChart } from "./gender-chart";
 import { AgeGroupChart } from "./age-group-chart";
 import { CommunityChart } from "./community-chart";
 import { IssuesChart } from "./issues-chart";
 import { PoliticalMoodChart } from "./political-mood-chart";
+import CandidateWinPercentages from "./candidate-win-percentages";
 
 export default function Body() {
-  const [loading, setLoading] = useState(false);
+
   return (
     <div className="flex bg-[#FBFBFB] flex-col gap-y-3 py-5 px-4 sm:px-8 h-[calc(100%-45px)]">
       <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 ">
@@ -44,7 +42,7 @@ export default function Body() {
             </div>
             <div>
               <p className="text-[#121212] text-xl font-bold">
-                {loading ? "..." : value ?? 0}
+                {value}
               </p>
               <p className="text-[#636363] text-sm font-normal">{label}</p>
             </div>
@@ -52,10 +50,8 @@ export default function Body() {
         ))}
       </div>
       <div>
-        <CandidateWinPercentages />
+        <CandidateWinPercentages/>
       </div>
-      <div>
-        {/* <VotingChart/> */}
       <div className="grid grid-cols-3 gap-4">
         <GenderChart/>
         <AgeGroupChart/>
@@ -65,7 +61,6 @@ export default function Body() {
         <IssuesChart/>
         <PoliticalMoodChart/>
       </div>
-      </div>
-      </div>
+    </div>
   );
 }
