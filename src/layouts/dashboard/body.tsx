@@ -1,44 +1,56 @@
-import { Clock, FileText, User } from "lucide-react";
+
 import { useState } from "react";
+import CandidateWinPercentages from "./candidate-win-percentages";
+import VotingChart from "./voting-chart";
 
 export default function Body() {
   const [loading, setLoading] = useState(false);
   return (
     <div className="flex bg-[#FBFBFB] flex-col gap-y-3 py-5 px-4 sm:px-8 h-[calc(100%-45px)]">
-      <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 ">
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 ">
         {[
           {
-            icon: FileText,
-            label: "Total Enquires",
-            value: 40,
+            icon: "/assets/icon/enquiry.svg",
+            label: "Total Enquiries",
+            value: 50,
+            bg: "bg-[#2563EB]",
           },
           {
-            icon: User,
-            label: "Total Admissions",
-            value: 30,
+            icon: "/assets/icon/enquirytwo.svg",
+            label: "Last 24 hours Enquiries",
+            value: 14,
+            bg: "bg-[#B163FF]",
           },
           {
-            icon: Clock,
-            label: "Last 24 hours Admissions",
-            value: 200,
+            icon: "/assets/icon/enquirythree.svg",
+            label: "Last 7 Day Enquiries",
+            value: 14,
+            bg: "bg-[#22C55E]",
           },
-         
-        ].map(({ icon: Icon, label, value }, i) => (
+        ].map(({ icon: Icon, label, value, bg }, i) => (
           <div
             key={i}
-            className="w-full rounded-[6px] border border-[#EEEEEE] bg-white px-2 py-5 flex items-center gap-x-2"
+            className="w-full rounded-[12px] border border-[#EEEEEE] bg-white px-4 py-4 flex items-center gap-x-2"
           >
-            <div className="bg-[#EAF9FF] w-[40px] h-[40px] rounded-full flex items-center justify-center">
-              <Icon className="text-[#44A5FF] w-5" />
+            <div
+              className={`${bg} size-11 rounded-[10px] flex items-center justify-center`}
+            >
+              <img src={Icon} alt={Icon} className="size-7" />
             </div>
             <div>
-              <p className="text-[#636363] text-[13px] font-medium">{label}</p>
-              <p className="text-[#464646] text-[18px] font-bold">
+              <p className="text-[#121212] text-xl font-bold">
                 {loading ? "..." : value ?? 0}
               </p>
+              <p className="text-[#636363] text-sm font-normal">{label}</p>
             </div>
           </div>
         ))}
+      </div>
+      <div>
+        <CandidateWinPercentages />
+      </div>
+      <div>
+        <VotingChart/>
       </div>
     </div>
   );
