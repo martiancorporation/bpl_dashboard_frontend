@@ -1,5 +1,10 @@
 import { Clock, FileText, User } from "lucide-react";
 import { useState } from "react";
+import { GenderChart } from "./gender-chart";
+import { AgeGroupChart } from "./age-group-chart";
+import { CommunityChart } from "./community-chart";
+import { IssuesChart } from "./issues-chart";
+import { PoliticalMoodChart } from "./political-mood-chart";
 
 export default function Body() {
   const [loading, setLoading] = useState(false);
@@ -39,6 +44,15 @@ export default function Body() {
             </div>
           </div>
         ))}
+      </div>
+      <div className="grid grid-cols-3 gap-4">
+        <GenderChart/>
+        <AgeGroupChart/>
+        <CommunityChart/>
+      </div>
+      <div className="grid grid-cols-3 gap-4">
+        <IssuesChart/>
+        <PoliticalMoodChart/>
       </div>
     </div>
   );
