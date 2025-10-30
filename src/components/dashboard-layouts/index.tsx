@@ -1,14 +1,18 @@
-// DashboardLayout.tsx
 import { Outlet } from "react-router-dom";
 import Sidebar from "./sidebar";
 
 export default function DashboardLayout() {
   return (
-    <div className="flex h-full scroll-smooth">
+    <div className="flex h-screen overflow-hidden">
+      {/* Sidebar should be fixed-height, full-screen */}
       <Sidebar />
-      <main className="flex-1 overflow-auto ">
-        <Outlet /> {/* Child routes will render here */}
-      </main>
+
+      {/* Main content scrolls independently */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <main className="flex-1 overflow-y-auto bg-[#F9FAFB]">
+          <Outlet /> {/* Child routes render here */}
+        </main>
+      </div>
     </div>
   );
 }
