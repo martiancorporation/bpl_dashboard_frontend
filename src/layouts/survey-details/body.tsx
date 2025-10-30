@@ -2,9 +2,43 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChevronLeft } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import type { CommonProps } from "./types";
 
-const Body: React.FC<CommonProps> = (_this) => {
+interface SurveyResponse {
+  _id: string;
+  name: string;
+  mobile: string;
+  age_group: string;
+  gender: string;
+  caste: string;
+  caste_other: string;
+  occupation: string;
+  block_name: string;
+  panchayat_name: string;
+  ward_name: string;
+  booth_no: string;
+  q1_winner_prediction: string;
+  q2_mla_satisfaction: string;
+  q3_voter_mood: string;
+  q4_big_issue: string;
+  q5_issue_priority: string;
+  q5_issue_priority_other: string;
+  q6_scheme_benefit: string;
+  q7_trusted_leader: string;
+  q8_owaisi_view: string;
+  q9_voting_decision: string;
+  q10_voting_reason: string;
+  q11_info_source: string;
+  q12_influence: string;
+  q13_leader_type: string;
+  q14_bihar_dream: string;
+  serveyor_id: string;
+  serveyor_name: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+const Body = (_this: { survey: SurveyResponse | undefined }) => {
   console.log(_this.survey);
   const survey = _this.survey ? _this.survey : undefined;
   return (
@@ -17,8 +51,8 @@ const Body: React.FC<CommonProps> = (_this) => {
           Preview
         </div>
       </div>
-      <Card className="border rounded-lg overflow-hidden shadow-none p-0">
-        <CardHeader className="bg-[#367CFF] text-white flex justify-between items-center py-2.5 px-4">
+      <Card className="border rounded-lg shadow-none p-0">
+        <CardHeader className="bg-[#367CFF] rounded-t-lg text-white flex justify-between items-center py-2.5 px-4">
           <CardTitle className="text-[15px] font-normal">
             Basic Information
           </CardTitle>
@@ -66,14 +100,14 @@ const Body: React.FC<CommonProps> = (_this) => {
           <div>
             <p className="text-gray-500">Mobile number</p>
             <p className="font-medium text-gray-900">
-              {survey?.mobile_number ? survey.mobile_number : "N/A"}
+              {survey?.mobile ? survey.mobile : "N/A"}
             </p>
           </div>
         </CardContent>
       </Card>
 
-      <Card className="border rounded-lg overflow-hidden shadow-none p-0">
-        <CardHeader className="bg-[#367CFF] text-white flex justify-start items-center py-2.5 px-4">
+      <Card className="border rounded-lg shadow-none p-0">
+        <CardHeader className="bg-[#367CFF] rounded-t-lg text-white flex justify-start items-center py-2.5 px-4">
           <CardTitle className="text-[15px] font-normal">
             Political Mood & Sentiment
           </CardTitle>
@@ -102,6 +136,18 @@ const Body: React.FC<CommonProps> = (_this) => {
                 <RadioGroupItem value="sangeeta_devi" id="q1-sangeeta" />
                 <Label htmlFor="q1-sangeeta" className="font-normal">
                   Sangeeta Devi (LJP-RV – NDA)
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2 mt-2">
+                <RadioGroupItem value="sangeeta_devi" id="q1-sangeeta" />
+                <Label htmlFor="q1-sangeeta" className="font-normal">
+                  MD Zinnah
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2 mt-2">
+                <RadioGroupItem value="sangeeta_devi" id="q1-sangeeta" />
+                <Label htmlFor="q1-sangeeta" className="font-normal">
+                  Er Moazzam Hussain
                 </Label>
               </div>
               <div className="flex items-center space-x-2 mt-2">
@@ -177,8 +223,8 @@ const Body: React.FC<CommonProps> = (_this) => {
         </CardContent>
       </Card>
 
-      <Card className="border rounded-lg overflow-hidden shadow-none p-0">
-        <CardHeader className="bg-[#367CFF] text-white flex justify-start items-center py-2.5 px-4">
+      <Card className="border rounded-lg  shadow-none p-0">
+        <CardHeader className="bg-[#367CFF] rounded-t-lg text-white flex justify-start items-center py-2.5 px-4">
           <CardTitle className="text-[15px] font-normal">
             Issue Perception
           </CardTitle>
@@ -258,8 +304,8 @@ const Body: React.FC<CommonProps> = (_this) => {
         </CardContent>
       </Card>
 
-      <Card className="border rounded-lg overflow-hidden shadow-none p-0">
-        <CardHeader className="bg-[#367CFF] text-white flex justify-start items-center py-2.5 px-4">
+      <Card className="border rounded-lg  shadow-none p-0">
+        <CardHeader className="bg-[#367CFF] rounded-t-lg text-white flex justify-start items-center py-2.5 px-4">
           <CardTitle className="text-[15px] font-normal">
             Voting Intention & Behavior
           </CardTitle>
@@ -314,8 +360,8 @@ const Body: React.FC<CommonProps> = (_this) => {
         </CardContent>
       </Card>
 
-      <Card className="border rounded-lg overflow-hidden shadow-none p-0">
-        <CardHeader className="bg-[#367CFF] text-white flex justify-start items-center py-2.5 px-4">
+      <Card className="border rounded-lg  shadow-none p-0">
+        <CardHeader className="bg-[#367CFF] rounded-t-lg text-white flex justify-start items-center py-2.5 px-4">
           <CardTitle className="text-[15px] font-normal">
             Communication & Influence
           </CardTitle>
@@ -379,8 +425,8 @@ const Body: React.FC<CommonProps> = (_this) => {
       </Card>
 
       {/* Aspirational Pulse */}
-      <Card className="border rounded-lg overflow-hidden shadow-none p-0">
-        <CardHeader className="bg-[#367CFF] text-white flex justify-start items-center py-2.5 px-4">
+      <Card className="border rounded-lg  shadow-none p-0">
+        <CardHeader className="bg-[#367CFF] rounded-t-lg text-white flex justify-start items-center py-2.5 px-4">
           <CardTitle className="text-[15px] font-normal">
             Aspirational Pulse
           </CardTitle>
