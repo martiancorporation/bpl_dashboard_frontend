@@ -42,7 +42,7 @@ const SurveyTable: React.FC<CommonProps> = (_this) => {
         <div className="w-full md:w-auto flex justify-between md:justify-center items-center gap-x-1 ">
           <div className="text-sm text-[#4A4A4A]">Last 24 hours data -</div>
           <div className="bg-[#D8ECFF] text-[#4A4A4A] text-xs font-medium px-2 py-0.5 text-center rounded-2xl">
-            100+
+            {_this.surveyData?.length ? _this.surveyData.length - 1 : _this.surveyData?.length}+
           </div>
         </div>
         <div className="flex items-center gap-x-2">
@@ -81,10 +81,10 @@ const SurveyTable: React.FC<CommonProps> = (_this) => {
                 Panchayat
               </TableHead>
               <TableHead className="w-[10%] border-r text-[#EAECF0]">
-                Cast/Community
+                Booth Name
               </TableHead>
               <TableHead className="w-[10%] border-r text-[#EAECF0]">
-                Preferred MLA
+                Cast/Community
               </TableHead>
               <TableHead className="w-[10%] border-r text-[#EAECF0]">
                 Date & Time
@@ -133,10 +133,10 @@ const SurveyTable: React.FC<CommonProps> = (_this) => {
                         {survey.panchayat_name}
                       </TableCell>
                       <TableCell className="w-[10%] border-r text-center">
-                        {survey?.caste}
+                        {survey?.booth_name}
                       </TableCell>
                       <TableCell className="w-[10%] border-r text-center">
-                        {survey?.q7_trusted_leader}
+                        {survey?.caste}
                       </TableCell>
                       <TableCell className="w-[10%] text-[15px] max-w-[100px] border-r py-0 text-center truncate overflow-hidden whitespace-nowrap">
                         <span>
