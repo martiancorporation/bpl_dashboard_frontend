@@ -2,7 +2,7 @@ import API from "@/api";
 import { useCallback, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
-const PAGE_LIMIT = 100;
+const PAGE_LIMIT = 1000;
 
 const useSurvey = () => {
   const [surveyData, setSurveyData] = useState<any[]>([]);
