@@ -1,36 +1,14 @@
 // src/pages/dashboard/index.tsx
 import Navbar from "@/components/dashboard-layouts/navbar";
-import { useEffect, useState } from "react";
-import API from "@/api";
-import { Body } from "./body";
-import type { AnalyticsData } from "./types";
+import Body from "./body";
+import useSurvey from "@/hooks/useSurvey";
 
 const Dashboard = () => {
-  const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-
-  const fetchAnalytics = async () => {
-    setLoading(true);
-    try {
-      const response = await API.survey.GetSurveyAnalytics();
-      if (response?.data) {
-        setAnalytics(response.data);
-      }
-    } catch (error) {
-      console.error("Failed to fetch analytics:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchAnalytics();
-  }, []);
-
+  const _this = useSurvey();
   return (
-    <main className="w-full flex-1 flex flex-col overflow-y-auto">
-      <Navbar title="Dashboard" />
-      <Body analytics={analytics} loading={loading} />
+    <main className="w-full h-full flex flex-col">
+      <Navbar title={"Survey Details"} />
+      <Body {..._this} />
     </main>
   );
 };
