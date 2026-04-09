@@ -1,5 +1,4 @@
 import { FileText } from "lucide-react";
-import { useState } from "react";
 import { GenderChart } from "./gender-chart";
 import { AgeGroupChart } from "./age-group-chart";
 import { CommunityChart } from "./community-chart";

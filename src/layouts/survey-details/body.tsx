@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, ChevronLeft } from "lucide-react";
 import { SURVEY_QUESTIONS } from "@/data/surveyQuestions";
+import { useNavigate } from "react-router-dom";
 
 interface SurveyResponse {
   _id: string;
@@ -34,8 +35,11 @@ interface SurveyResponse {
   __v: number;
 }
 
-const Body = (_this: { survey: SurveyResponse | undefined }) => {
-  console.log(_this.survey);
+const Body = (_this: {
+  survey: SurveyResponse | undefined;
+  loading: boolean;
+}) => {
+  const navigate = useNavigate();
   const survey = _this.survey ? _this.survey : undefined;
 
   const questionAnswerMap = SURVEY_QUESTIONS.map((q) => {
@@ -53,9 +57,9 @@ const Body = (_this: { survey: SurveyResponse | undefined }) => {
     <div className="container mx-auto px-8 h-full flex flex-col gap-y-4">
       <div className="w-full flex flex-col md:flex-row gap-4 items-center justify-between pt-5 px-1.5">
         <div className="w-full md:w-auto flex justify-between md:justify-center items-center gap-x-3 text-[14px] font-medium cursor-pointer">
-          <a href="/dashboard/survey-data" className="w-[25px] h-[25px] bg-[#F1F1F1] rounded-[5px] flex justify-center items-center">
+          <span onClick={() => navigate(-1)} className="w-[25px] h-[25px] bg-[#F1F1F1] rounded-[5px] flex justify-center items-center">
             <ChevronLeft size={16} />
-          </a>{" "}
+          </span>{" "}
           Preview
         </div>
       </div>

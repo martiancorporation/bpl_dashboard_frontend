@@ -1,3 +1,4 @@
+// src/pages/dashboard/index.tsx
 import Navbar from "@/components/dashboard-layouts/navbar";
 import Body from "./body";
 import useSurvey from "@/hooks/useSurvey";

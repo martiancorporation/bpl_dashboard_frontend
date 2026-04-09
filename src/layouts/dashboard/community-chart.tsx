@@ -91,6 +91,7 @@ export function CommunityChart({ surveyData = [] }: CommonProps) {
           <CardTitle>Caste/Community</CardTitle>
         </div>
       </CardHeader>
+
       <CardContent className="flex flex-col justify-between h-full">
         {hasData ? (
           <ChartContainer className="h-36 w-full" config={chartConfig}>
@@ -151,6 +152,7 @@ export function CommunityChart({ surveyData = [] }: CommonProps) {
   );
 }
 
+// ✅ Reusable bar with glow effect
 const CustomGradientBar = (
   props: React.SVGProps<SVGRectElement> & {
     dataKey?: string;
