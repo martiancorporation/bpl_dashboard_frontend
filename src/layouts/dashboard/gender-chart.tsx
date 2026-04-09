@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { LabelList, Pie, PieChart } from "recharts";
 
 import {
@@ -14,46 +15,66 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-
-const chartData = [
-  { gender: "male", count: 275, fill: "#FB923C" },
-  { gender: "female", count: 200, fill: "#C084FC" },
-  { gender: "others", count: 187, fill: "#2563EB" },
-];
+import type { CommonProps } from "../survey/types";
 
 const chartConfig = {
-  gender: {
-    label: "Gender",
-  },
-  male: {
-    label: "Male",
-    color: "#FB923C",
-  },
-  female: {
-    label: "Female",
-    color: "#C084FC",
-  },
-  others: {
-    label: "Others",
-    color: "#2563EB",
-  }
+  gender: { label: "Gender" },
+  male: { label: "Male", color: "#FB923C" },
+  female: { label: "Female", color: "#C084FC" },
+  other: { label: "Other", color: "#2563EB" },
 } satisfies ChartConfig;
 
+const COLORS: Record<string, string> = {
+  male: "#FB923C",
+  female: "#C084FC",
+  other: "#2563EB",
+};
 
-export function GenderChart() {
+export function GenderChart({ surveyData = [] }: CommonProps)  {
+  const { chartData, items } = useMemo(() => {
+  type Gender = "male" | "female" | "other";
+
+  const counts: Record<Gender, number> = {
+    male: 0,
+    female: 0,
+    other: 0,
+  };
+
+  surveyData.forEach((curr) => {
+    const key = curr.gender?.toLowerCase() as Gender;
+    if (key && key in counts) {
+      counts[key]++;
+    }
+  });
+
+  const chartData = (Object.entries(counts) as [Gender, number][])
+    .filter(([, count]) => count > 0)
+    .map(([gender, count]) => ({
+      gender,
+      count,
+      fill: COLORS[gender],
+    }));
+
   const total = chartData.reduce((sum, d) => sum + d.count, 0);
+
   const items = chartData.map((d) => ({
     label: d.gender,
     color: d.fill,
-    percent: ((d.count / total) * 100).toFixed(0) + "%",
+    percent: total
+      ? `${Math.round((d.count / total) * 100)}%`
+      : "0%",
+    count: d.count,
   }));
+
+  return { chartData, items };
+}, [surveyData]);
+
   return (
     <Card className="flex flex-col border border-[#D2D5DA] shadow-none">
       <CardHeader className="items-center pb-0">
-        <CardTitle>
-          Gender
-        </CardTitle>
+        <CardTitle>Gender</CardTitle>
       </CardHeader>
+
       <CardContent className="flex flex-col justify-between h-full">
         <ChartContainer
           config={chartConfig}
@@ -65,13 +86,12 @@ export function GenderChart() {
             />
             <Pie
               data={chartData}
-              innerRadius={55}
               dataKey="count"
-              radius={10}
+              innerRadius={55}
+              stroke="none"
             >
               <LabelList
                 dataKey="count"
-                stroke="none"
                 fontSize={12}
                 fontWeight={500}
                 fill="currentColor"
@@ -80,9 +100,13 @@ export function GenderChart() {
             </Pie>
           </PieChart>
         </ChartContainer>
+
         <div className="flex flex-col gap-3">
           {items.map((item) => (
-            <div key={item.label} className="flex items-center justify-between">
+            <div
+              key={item.label}
+              className="flex items-center justify-between"
+            >
               <div className="flex items-center gap-2">
                 <span
                   className="w-3.5 h-3.5 rounded-full"
@@ -92,6 +116,7 @@ export function GenderChart() {
                   {item.label}
                 </span>
               </div>
+
               <span className="text-black text-sm font-medium">
                 {item.percent}
               </span>
@@ -101,4 +126,4 @@ export function GenderChart() {
       </CardContent>
     </Card>
   );
-}
+};
