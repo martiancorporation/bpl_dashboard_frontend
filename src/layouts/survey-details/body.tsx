@@ -15,7 +15,7 @@ interface SurveyResponse {
   block_name: string;
   panchayat_name: string;
   booth_name: string;
-  ward_name: string;
+  ward_number: string;
   booth_no: string;
   question_1: string;
   question_2: string;
@@ -57,7 +57,10 @@ const Body = (_this: {
     <div className="container mx-auto px-8 h-full flex flex-col gap-y-4">
       <div className="w-full flex flex-col md:flex-row gap-4 items-center justify-between pt-5 px-1.5">
         <div className="w-full md:w-auto flex justify-between md:justify-center items-center gap-x-3 text-[14px] font-medium cursor-pointer">
-          <span onClick={() => navigate(-1)} className="w-[25px] h-[25px] bg-[#F1F1F1] rounded-[5px] flex justify-center items-center">
+          <span
+            onClick={() => navigate(-1)}
+            className="w-[25px] h-[25px] bg-[#F1F1F1] rounded-[5px] flex justify-center items-center"
+          >
             <ChevronLeft size={16} />
           </span>{" "}
           Preview
@@ -84,17 +87,23 @@ const Body = (_this: {
         <CardContent className="grid grid-cols-2 md:grid-cols-5 gap-y-4 gap-x-8 text-sm p-4">
           <div>
             <p className="text-gray-500">Name</p>
-            <p className="font-medium text-gray-900 capitalize">{survey?.name}</p>
+            <p className="font-medium text-gray-900 capitalize">
+              {survey?.name}
+            </p>
           </div>
 
           <div>
             <p className="text-gray-500">Gender</p>
-            <p className="font-medium text-gray-900 capitalize">{survey?.gender}</p>
+            <p className="font-medium text-gray-900 capitalize">
+              {survey?.gender}
+            </p>
           </div>
 
           <div>
             <p className="text-gray-500">Caste/Community</p>
-            <p className="font-medium text-gray-900 capitalize">{survey?.caste}</p>
+            <p className="font-medium text-gray-900 capitalize">
+              {survey?.caste}
+            </p>
           </div>
 
           <div>
@@ -104,7 +113,9 @@ const Body = (_this: {
 
           <div>
             <p className="text-gray-500">Ward</p>
-            <p className="font-medium text-gray-900 capitalize">{survey?.ward_name}</p>
+            <p className="font-medium text-gray-900 capitalize">
+              {survey?.ward_number}
+            </p>
           </div>
 
           <div>
@@ -123,7 +134,9 @@ const Body = (_this: {
 
           <div>
             <p className="text-gray-500">Occupation</p>
-            <p className="font-medium text-gray-900 capitalize">{survey?.occupation}</p>
+            <p className="font-medium text-gray-900 capitalize">
+              {survey?.occupation}
+            </p>
           </div>
 
           <div>
