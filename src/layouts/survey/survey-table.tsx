@@ -42,7 +42,10 @@ const SurveyTable: React.FC<CommonProps> = (_this) => {
         <div className="w-full md:w-auto flex justify-between md:justify-center items-center gap-x-1 ">
           <div className="text-sm text-[#4A4A4A]">Last 24 hours data -</div>
           <div className="bg-[#D8ECFF] text-[#4A4A4A] text-xs font-medium px-2 py-0.5 text-center rounded-2xl">
-            {_this.surveyData?.length ? _this.surveyData.length - 1 : _this.surveyData?.length}+
+            {_this.surveyData?.length
+              ? _this.surveyData.length - 1
+              : _this.surveyData?.length}
+            +
           </div>
         </div>
         <div className="flex items-center gap-x-2">
@@ -127,7 +130,7 @@ const SurveyTable: React.FC<CommonProps> = (_this) => {
                         {survey?.age_group}
                       </TableCell>
                       <TableCell className="px-2 w-[12%] max-w-[120px] border-r py-0 text-center truncate overflow-hidden whitespace-nowrap">
-                        {survey.ward_name}
+                        {survey.ward_number}
                       </TableCell>
                       <TableCell className="w-[13%] max-w-[200px] text-[15px] border-r text-center truncate overflow-hidden whitespace-nowrap">
                         {survey.panchayat_name}
@@ -151,7 +154,7 @@ const SurveyTable: React.FC<CommonProps> = (_this) => {
                                 variant="ghost"
                                 onClick={() => {
                                   navigate(
-                                    `/dashboard/survey-data/${survey?._id}`
+                                    `/dashboard/survey-data/${survey?._id}`,
                                   );
                                 }}
                                 className="text-blue-500 cursor-pointer"
