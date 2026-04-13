@@ -23,11 +23,6 @@ interface SurveyResponse {
   question_4: string;
   question_5: string;
   question_6: string;
-  question_7: string;
-  question_8: string;
-  question_9: string;
-  question_10: string;
-  question_11: string;
   serveyor_id: string;
   serveyor_name: string;
   createdAt: string;
