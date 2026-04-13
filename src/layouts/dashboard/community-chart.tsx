@@ -23,8 +23,8 @@ const chartConfig = {
     label: "Christian",
     color: "#CD0AD0",
   },
-  obc: {
-    label: "OBC",
+  "st/sc": {
+    label: "ST/SC",
     color: "#FB923C",
   },
   others: {
@@ -52,7 +52,7 @@ export function CommunityChart({ surveyData = [] }: CommonProps) {
       muslim: 0,
       hindu: 0,
       christian: 0,
-      obc: 0,
+      "st/sc": 0,
       others: 0,
     };
 
@@ -119,7 +119,7 @@ export function CommunityChart({ surveyData = [] }: CommonProps) {
               />
               <Bar stackId="a" barSize={8} shape={<CustomGradientBar activeProperty={activeProperty} />} dataKey="hindu"    fill="#2563EB" overflow="visible" />
               <Bar stackId="a" barSize={8} shape={<CustomGradientBar activeProperty={activeProperty} />} dataKey="christian" fill="#CD0AD0" overflow="visible" />
-              <Bar stackId="a" barSize={8} shape={<CustomGradientBar activeProperty={activeProperty} />} dataKey="obc"       fill="#FB923C" overflow="visible" />
+              <Bar stackId="a" barSize={8} shape={<CustomGradientBar activeProperty={activeProperty} />} dataKey="st/sc"       fill="#FB923C" overflow="visible" />
               <Bar stackId="a" barSize={8} shape={<CustomGradientBar activeProperty={activeProperty} />} dataKey="others"    fill="#22C55E" overflow="visible" />
             </BarChart>
           </ChartContainer>

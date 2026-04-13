@@ -24,7 +24,7 @@ export interface AgeGroupStat {
 export interface CasteStats {
   muslim?: number;
   yadav?: number;
-  obc?: number;
+  "st/sc"?: number;
   dalit?: number;
   others?: number;
 }

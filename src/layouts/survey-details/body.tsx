@@ -11,7 +11,6 @@ interface SurveyResponse {
   gender: string;
   caste: string;
   caste_other: string;
-  occupation: string;
   block_name: string;
   panchayat_name: string;
   booth_name: string;
@@ -124,13 +123,6 @@ const Body = (_this: {
             <p className="text-gray-500">Booth Name</p>
             <p className="font-medium text-gray-900 capitalize">
               {survey?.booth_name}
-            </p>
-          </div>
-
-          <div>
-            <p className="text-gray-500">Occupation</p>
-            <p className="font-medium text-gray-900 capitalize">
-              {survey?.occupation}
             </p>
           </div>
 
