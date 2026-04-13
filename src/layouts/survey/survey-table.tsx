@@ -84,9 +84,6 @@ const SurveyTable: React.FC<CommonProps> = (_this) => {
                 Panchayat
               </TableHead>
               <TableHead className="w-[10%] border-r text-[#EAECF0]">
-                Booth Name
-              </TableHead>
-              <TableHead className="w-[10%] border-r text-[#EAECF0]">
                 Cast/Community
               </TableHead>
               <TableHead className="w-[10%] border-r text-[#EAECF0]">
@@ -120,25 +117,22 @@ const SurveyTable: React.FC<CommonProps> = (_this) => {
                       <TableCell className="px-5 w-[5%] border-r text-center">
                         {index + 1}
                       </TableCell>
-                      <TableCell className="w-[15%] text-[15px] max-w-[120px] border-r py-0 text-center truncate overflow-hidden whitespace-nowrap">
+                      <TableCell className="w-[15%] text-[15px] max-w-[120px] border-r py-0 text-center truncate overflow-hidden whitespace-nowrap capitalize">
                         {survey?.name}
                       </TableCell>
-                      <TableCell className="w-[10%] text-[15px] max-w-[120px] border-r py-0 text-center truncate overflow-hidden whitespace-nowrap">
+                      <TableCell className="w-[10%] text-[15px] max-w-[120px] border-r py-0 text-center truncate overflow-hidden whitespace-nowrap capitalize">
                         {survey?.gender}
                       </TableCell>
                       <TableCell className="w-[10%] text-[15px] border-r text-center">
                         {survey?.age_group}
                       </TableCell>
-                      <TableCell className="px-2 w-[12%] max-w-[120px] border-r py-0 text-center truncate overflow-hidden whitespace-nowrap">
-                        {survey.ward_number}
+                      <TableCell className="px-2 w-[12%] max-w-[120px] border-r py-0 text-center truncate overflow-hidden whitespace-nowrap capitalize">
+                        {survey.ward_number || "N/A"}
                       </TableCell>
-                      <TableCell className="w-[13%] max-w-[200px] text-[15px] border-r text-center truncate overflow-hidden whitespace-nowrap">
-                        {survey.panchayat_name}
+                      <TableCell className="w-[13%] max-w-[200px] text-[15px] border-r text-center truncate overflow-hidden whitespace-nowrap capitalize">
+                        {survey.panchayat_name || "N/A"}
                       </TableCell>
-                      <TableCell className="w-[10%] border-r text-center">
-                        {survey?.booth_name}
-                      </TableCell>
-                      <TableCell className="w-[10%] border-r text-center">
+                      <TableCell className="w-[10%] border-r text-center capitalize">
                         {survey?.caste}
                       </TableCell>
                       <TableCell className="w-[10%] text-[15px] max-w-[100px] border-r py-0 text-center truncate overflow-hidden whitespace-nowrap">

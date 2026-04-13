@@ -248,12 +248,12 @@ const Sidebar: React.FC = () => {
                 Developed By
               </div>
               <a
-                href="https://martiancorporation.com/"
+                href="https://bengalpoliticallab.in"
                 target="_blank"
                 rel="noreferrer"
                 className="text-[#323232] text-sm hover:text-blue-600 transition"
               >
-                Martian Corporation
+                Bengal Political Lab
               </a>
             </motion.div>
           )}
